@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html>
+    <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <style>
+        .popup-subheader {
+    text-align: center;
+    margin-top: -5px;
+    margin-bottom: 6px;
+    font-size: smaller;
+    font-weight: normal;
+    }
+        .ui-bar {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    }
+    .center-wrapper span {
+    vertical-align: middle;
+    line-height: 30px;
+    }
+    .center-wrapper img {
+    vertical-align: middle;
+    }
+
+        .alert {
+    padding: 20px;
+    border-radius: 5px;
+    color: white;
+    text-align: center;
+    }
+
+    .closebtn {
+    margin-left: 15px;
+    color: white;
+    font-weight: bold;
+    float: right;
+    font-size: 22px;
+    line-height: 20px;
+    cursor: pointer;
+    transition: 0.3s;
+    }
+
+    .closebtn:hover {
+    color: black;
+    }
+
+    </style>
+    <script src="https://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script src="https://code.jquery.com/mobile/1.4.5/jquery.mobile-1.4.5.min.js"></script>
+    <script>
+            function hideButtons() {
+            var time = 500;
+            var value_radio = $("input[name='radio_choice_v_6']:checked").val()
+            $("#extra").attr("value", value_radio);
+            console.log($("#extra").attr("value"));
+                if ($("input[name='radio_choice_v_6']:checked").val() == '1'){
+                if ($("#reviewDate").is(':hidden')){$("#reviewDate").show(time);}  
+                if ($("#solvedDate").is(':hidden')){$("#solvedDate").show(time);} 
+                if ($("#trans").is(':hidden')){$("#trans").show(time);}
+                if ($("#task").is(':hidden')){$("#task").show(time);}
+                if ($("#project").is(':hidden')){$("#project").show(time);}
+                if ($("#remq").is(':hidden')){$("#remq").show(time);} 
+                }
+                if ($("input[name='radio_choice_v_6']:checked").val() == '2'){
+                if ($("#reviewDate").is(':hidden')){$("#reviewDate").show(time);}
+                if ($("#solvedDate").is(':visible')){$("#solvedDate").hide(time);}
+                if ($("#trans").is(':visible')){$("#trans").hide(time);}
+                if ($("#task").is(':visible')){$("#task").hide(time);}
+                if ($("#project").is(':visible')){$("#project").hide(time);}
+                if ($("#remq").is(':visible')){$("#remq").hide(time);}
+                }
+                if ($("input[name='radio_choice_v_6']:checked").val() == '3'){
+                if ($("#reviewDate").is(':hidden')){$("#reviewDate").show(time);}  
+                if ($("#solvedDate").is(':visible')){$("#solvedDate").hide(time);} 
+                if ($("#trans").is(':visible')){$("#trans").hide(time);}
+                if ($("#task").is(':visible')){$("#task").hide(time);}
+                if ($("#project").is(':visible')){$("#project").hide(time);}
+                if ($("#remq").is(':hidden')){$("#remq").show(time);} 
+                }
+                if ($("input[name='radio_choice_v_6']:checked").val() == '4'){
+                if ($("#solvedDate").is(':hidden')){$("#solvedDate").show(time);}  
+                if ($("#reviewDate").is(':visible')){$("#reviewDate").hide(time);} 
+                if ($("#trans").is(':visible')){$("#trans").hide(time);}
+                if ($("#task").is(':visible')){$("#task").hide(time);}
+                if ($("#project").is(':visible')){$("#project").hide(time);}
+                if ($("#remq").is(':hidden')){$("#remq").show(time);} 
+                }
+
+                if ($("input[name='radio_choice_v_6']:checked").val() == '5'){
+                if ($("#solvedDate").is(':hidden')){$("#solvedDate").show(time);}  
+                if ($("#reviewDate").is(':visible')){$("#reviewDate").hide(time);} 
+                if ($("#trans").is(':visible')){$("#trans").hide(time);}
+                if ($("#task").is(':visible')){$("#task").hide(time);}
+                if ($("#project").is(':visible')){$("#project").hide(time);}
+                if ($("#remq").is(':hidden')){$("#remq").show(time);} 
+                }
+                
+            }
+
+            function hideButtonsRefresh() {
+            var value_radio = $("input[name='radio_choice_v_6']:checked").val()
+            $("#extra").attr("value", value_radio);
+
+            console.log($("#extra").attr("value"));
+                if ($("input[name='radio_choice_v_6']:checked").val() == '2'){
+                $("#solvedDate").hide();
+                $("#trans").hide();
+                $("#task").hide();
+                $("#project").hide();
+                $("#remq").hide();
+                }
+                if ($("input[name='radio_choice_v_6']:checked").val() == '3'){
+                $("#solvedDate").hide();
+                $("#trans").hide();
+                $("#task").hide();
+                $("#project").hide();
+                }
+                if ($("input[name='radio_choice_v_6']:checked").val() == '4' || $("input[name='radio_choice_v_6']:checked").val() == '5'){
+                $("#reviewDate").hide();
+                $("#trans").hide();
+                $("#task").hide();
+                $("#project").hide();
+                }   
+            }
+
+            function sleep(ms) {
+            return new Promise(resolve => setTimeout(resolve, ms));
+            }
+
+
+
+            $(document).on("pagecreate", "#page1", function(){
+                $("#extra").hide();
+                hideButtonsRefresh();
+                $("input[name='radio_choice_v_6']").on("change", hideButtons);
+            });
+
+            function getDate(dd, mm, yyyy){
+                if(dd<10){
+                    dd='0'+dd
+                } 
+                if(mm<10){
+                    mm='0'+mm
+                } 
+
+            date = yyyy+'-'+mm+'-'+dd;
+            return date;
+            };
+
+            async function alertFun(){
+            if ($('#id').val() == '' || $('#rel').val() == ''){
+                alert('Please, fill all the gaps!');
+                return false;
+            }
+
+            if($('#extra').val() == '1' && ($('#revDate').val() == '' || $('#solDate').val() == '' || $('#txId').val() == '' || $('#taskId').val() == '' || $('#proj').val() == '' || $('#qa').val() == '')){
+                alert('Please, fill all the gaps!');
+                return false;
+            }
+
+            if($('#extra').val() == '2' && ($('#revDate').val() == '' )){
+            alert('Please, fill all the gaps!');
+            return false;
+            }
+
+            if($('#extra').val() == '3' && ($('#revDate').val() == '' ||  $('#qa').val() == '')){
+            alert('Please, fill all the gaps!');
+            return false;
+            }
+
+            if($('#extra').val() == '4' && ($('#qa').val() == '' || $('#solDate').val() == '')){
+            alert('Please, fill all the gaps!');
+            return false;
+            }
+
+            if($('#extra').val() == '5' && ($('#qa').val() == '' || $('#solDate').val() == '')){
+            alert('Please, fill all the gaps!');
+            return false;
+            }
+
+            var f = confirm('Form filled correctly?');
+            if (f){
+            $('#labelAutreNumeroId').hide();
+            $('#loading').show();
+            await sleep(2000);
+            $('#loading').hide();
+            $('#labelAutreNumeroId').show();
+            $('#success').show();
+            }
+            return f;
+            }
+    </script>
+    
+    </head>
+    <link rel="icon" href="https://www.drupal.org/files/user-pictures/picture-3558882-1523519393.png">
+    <body>
+    <body>
+      
+      <div data-role="page" id="page1" data-url="/">
+        <div data-role="header" style="font-size: 30px;">
+            <h1><div class="center-wrapper">
+              <img src="https://seeklogo.com/images/T/TomTom-logo-4C6C71CCE6-seeklogo.com.png" alt="Header" width="200" height="50"/>
+              <span>  Update Error Logs</span>
+            </div></h1>
+        </div>
+
+      <div class="ui-grid-b">
+        <div class="ui-block-a"></div>
+        <div class="ui-block-b">
+      
+              <div role="main" class="ui-content">
+                  <fieldset id="NumTel" data-role="controlgroup">
+                      <input type="radio" name="radio_choice_v_6" id="radio-choice-v-6a" value="1" checked/>
+                      <label for="radio-choice-v-6a">Error Solved</label>
+                      <input type="radio" name="radio_choice_v_6" id="radio-choice-v-6b" value="2" />
+                      <label for="radio-choice-v-6b">Error not Solved</label>
+                      <input type="radio" name="radio_choice_v_6" id="radio-choice-v-6c" value="3" />
+                      <label for="radio-choice-v-6c">Error Solved But Transaction not Found</label>
+                      <input type="radio" name="radio_choice_v_6" id="radio-choice-v-6d" value="4" />
+                      <label for="radio-choice-v-6d">Superfluous</label>
+                      <input type="radio" name="radio_choice_v_6" id="radio-choice-v-6e" value="5" />
+                      <label for="radio-choice-v-6e">Duplicated</label>
+                  </fieldset>
+                <div id = "loading" style="text-align : center; display : none;"><img src="https://hayward-pool-assets.com/assets/images/pools/icons/loading-gif.gif" alt="" width="100" height="100" /></div>
+                  <div class="labelAutreNumero" id = "labelAutreNumeroId">
+                      
+                      <!--
+                      <div data-role="fieldcontain" id = error_id>
+                        <label for="rel"><b>Fruits:</b></label>
+                        <input autocomplete="off" type="text" name="id2" id="id2" placeholder="eg. 123456" value="" list="fruits" />
+                        <datalist id="fruits">
+                          <option value="Apple"></option>
+                          <option value="Orange"></option>
+                          <option value="Peach"></option>
+                          <option value="Melon"></option>
+                          <option value="Strawberry"></option>
+                        </datalist>
+                    </div>
+                    "if(!confirm('Is the update filled out correctly?')){return false;}"
+                    -->
+
+                      <div data-role="fieldcontain" id = error_id>
+                        <label for="id"><b>Error Id:</b></label>
+                        <input type="text" name="id" id="id" placeholder="eg. 123456" value="">
+                    </div>
+                      <div data-role="fieldcontain" id = reliable>
+                          <label for="rel"><b>Reliable:</b></label>
+                          <input type="text" name="rel" id="rel" placeholder="eg. Felisa" value="">
+                      </div>
+                      <div data-role="fieldcontain" id = reviewDate>
+                          <label for="revDate"><b>Review Date:</b></label>
+                          <input type='date' name="revDate" id="revDate" min='1899-01-01' max='2000-13-13' value=""></input>
+                      </div>
+                      <div data-role="fieldcontain" id = solvedDate>
+                        <label for="solDate"><b>Solved Date:</b></label>
+                        <input type='date' name="solDate" id="solDate" value=""></input>
+                      </div>
+                        <div data-role="fieldcontain" id = trans>
+                            <label for="txId"><b>tx-id:</b></label>
+                            <input type="text" name="txId" id="txId" placeholder="eg. 951a4dc5-0562-461d-9fe6-8463bbd08778" value="">
+                        </div>
+                        <div data-role="fieldcontain" id = task>
+                          <label for="taskId"><b>Task Id:</b></label>
+                          <input autocomplete="off" type="text" name="taskId" id="taskId" placeholder="eg. 73889805" value="" list="auto">
+                          <datalist id="auto">
+                            <option value="auto"></option>
+                          </datalist>
+                      </div>
+                      <div data-role="fieldcontain" id = project>
+                        <label for="proj"><b>Project:</b></label>
+                        <input type="text" name="proj" id="proj" placeholder="eg. COPSSAUTURNBYTURNGeo_SAM_SAU_Q420_MQS2_Realign_MSK" value="">
+                      </div>
+                      <div data-role="fieldcontain" id = remq>
+                        <label for="qa"><b>Remark Qa:</b></label>
+                        <input type="text" name="qa" id="qa" placeholder="eg. SPG: Solved, geo deleted." value="">
+                      </div>
+                      <button type="submit"
+                          class="ui-btn ui-corner-all ui-shadow 
+                          ui-btn-b ui-btn-icon-left ui-icon-check" onclick="alertFun();">
+                          Update
+                      </button>
+                        <input type="text" name="extra" id="extra" value="1">                
+
+                  </div>
+
+                  <div class="alert success" id = "success" style = "background-color: #04AA6D; display : none;">
+                    <span class="closebtn">&times;</span>  
+                    <i class="fa fa-check" aria-hidden="true" style="float: left;"></i>
+                    <p style="font-family:verdana; display: inline; padding: 10px;" >db Updated!</p> 
+                  </div>
+
+              </div>
+      </div>
+      <div class="ui-block-c"></div>
+  </div>
+    
+        <div data-role="footer" class="ui-bar" data-position="fixed" style="position:absolute">
+          <a href="https://www.tomtom.com/en_gb/?" data-role="button" data-icon="home">Home</a>
+        </div>
+    </div>
+        
+      <script>
+            var today = new Date();
+            var lastweek = new Date(today.getFullYear(), today.getMonth(), today.getDate()-6);
+            var dd_t = today.getDate()+1;
+            var mm_t = today.getMonth()+1; //January is 0!
+            var yyyy_t = today.getFullYear();
+
+            var dd_l = lastweek.getDate();
+            var mm_l = lastweek.getMonth()+1; //January is 0!
+            var yyyy_l = lastweek.getFullYear();
+
+
+            maxDate = getDate(dd_t, mm_t, yyyy_t);
+            minDate = getDate(dd_l, mm_l, yyyy_l);
+            document.getElementById("revDate").setAttribute("max", maxDate);
+            document.getElementById("revDate").setAttribute("min", minDate);
+            document.getElementById("solDate").setAttribute("max", maxDate);
+
+
+            var close = document.getElementsByClassName("closebtn");
+            var i;
+
+            for (i = 0; i < close.length; i++) {
+                close[i].onclick = function(){
+                var div = this.parentElement;
+                div.style.opacity = "0";
+                setTimeout(function(){ div.style.display = "none"; }, 600);
+                }
+            }
+      </script>  
+    </body>
+</html>
